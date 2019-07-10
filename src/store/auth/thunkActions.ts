@@ -2,6 +2,7 @@
 import { AnyAction } from "redux";
 import { ThunkAction } from "redux-thunk";
 
+import { logout } from "./actions";
 import { AppState } from "../rootReducer";
 
 // ---------------------------------------------- the actions
@@ -24,4 +25,6 @@ export const thunkLogout = (): ThunkAction<
   AppState,
   null,
   AnyAction
-> => dispatch => {};
+> => dispatch => {
+  dispatch(logout());
+};
