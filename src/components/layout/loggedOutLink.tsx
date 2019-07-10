@@ -1,18 +1,19 @@
 // ---------------------------------------------- modules import
 import React, { Fragment, FunctionComponent } from "react";
+import { Link } from "react-router-dom";
 
 // ---------------------------------------------- the component
 const LoggedOutLink: FunctionComponent = () => (
   <Fragment>
     <li>
-      <a href="/register" className="grey-text text-darken-4">
+      <Link to="/register" className="grey-text text-darken-4">
         Register
-      </a>
+      </Link>
     </li>
     <li>
-      <a href="/login" className="grey-text text-darken-4">
+      <Link to="/login" className="grey-text text-darken-4">
         Login
-      </a>
+      </Link>
     </li>
   </Fragment>
 );

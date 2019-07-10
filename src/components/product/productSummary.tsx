@@ -1,6 +1,7 @@
 // ---------------------------------------------- modules import
 import M from "materialize-css";
 import React, { FunctionComponent, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 // ---------------------------------------------- the component
 const ProductSummary: FunctionComponent = () => {
@@ -24,9 +25,12 @@ const ProductSummary: FunctionComponent = () => {
         <span className="right">{`Cost: ${"unitCost"}`}</span>
       </div>
       <div className="card-action right-align">
-        <a href={`/product/update/${"id"}`} className="grey-text text-darken-4">
+        <Link
+          to={`/product/update/${"id"}`}
+          className="grey-text text-darken-4"
+        >
           Edit
-        </a>
+        </Link>
         <button
           type="button"
           className="btn waves-effect waves-light grey darken-4 modal-trigger"

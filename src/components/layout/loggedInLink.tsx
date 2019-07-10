@@ -1,5 +1,6 @@
 // ---------------------------------------------- modules import
 import React, { Fragment, FunctionComponent, MouseEvent } from "react";
+import { Link } from "react-router-dom";
 
 // ---------------------------------------------- the component
 const LoggedInLink: FunctionComponent = () => {
@@ -14,9 +15,9 @@ const LoggedInLink: FunctionComponent = () => {
   return (
     <Fragment>
       <li>
-        <a href="/product/add" className="grey-text text-darken-4">
+        <Link to="/product/add" className="grey-text text-darken-4">
           Add Product
-        </a>
+        </Link>
       </li>
       <li>
         <a href="/" className="grey-text text-darken-4" onClick={handleLogout}>
