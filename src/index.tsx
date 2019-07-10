@@ -2,7 +2,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
+import thunk from "redux-thunk";
 
 import App from "./App";
 import rootReducer from "./store/rootReducer";
@@ -14,7 +15,7 @@ import "materialize-css/dist/css/materialize.min.css";
 import * as serviceWorker from "./serviceWorker";
 
 // ---------------------------------------------- create redux store
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 // ---------------------------------------------- app render
 ReactDOM.render(
