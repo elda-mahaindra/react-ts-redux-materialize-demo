@@ -1,7 +1,8 @@
 // ---------------------------------------------- modules import
 import React, { FunctionComponent } from "react";
 
-import Login from "./components/auth/login";
+// import Login from "./components/auth/login";
+import Register from "./components/auth/register";
 // import Dashboard from "./components/layout/dashboard";
 import Navbar from "./components/layout/navbar";
 
@@ -9,7 +10,7 @@ import Navbar from "./components/layout/navbar";
 const App: FunctionComponent = () => (
   <div className="App">
     <Navbar />
-    <Login />
+    <Register />
   </div>
 );
 
