@@ -8,3 +8,7 @@ export interface IAddProduct {
   error: string | null;
   addProduct: (product: IProduct, token: string, history: string[]) => void;
 }
+
+export interface IProductList {
+  products: IProduct[];
+}
