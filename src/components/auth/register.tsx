@@ -7,9 +7,22 @@ import React, {
   useEffect,
   useState
 } from "react";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
+
+import { IRegisterProps } from "./types";
+import { AppState } from "../../store/rootReducer";
+import { thunkRegister } from "../../store/auth/thunkActions";
 
 // ---------------------------------------------- the component
-const Register: FunctionComponent = () => {
+const Register: FunctionComponent<IRegisterProps> = ({
+  token,
+  loading,
+  error,
+  register
+}) => {
   // ---------------------------------------------- local state
   const [user, setUser] = useState({ email: "", password: "" });
 
@@ -21,8 +34,8 @@ const Register: FunctionComponent = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log("register user");
-    console.log(user);
+    const { email, password } = user;
+    register(email, password);
   };
 
   // ---------------------------------------------- effects
@@ -31,7 +44,9 @@ const Register: FunctionComponent = () => {
   }, []);
 
   // ---------------------------------------------- content
-  return (
+  return token ? (
+    <Redirect to="/" />
+  ) : (
     <div className="container">
       <h5 className="center-align">REGISTER</h5>
       <div className="row">
@@ -60,7 +75,7 @@ const Register: FunctionComponent = () => {
             </button>
           </div>
           <div className="input-field red-text center">
-            <p>Error register/login here.</p>
+            {loading ? <p>processing ...</p> : error ? <p>{error}</p> : null}
           </div>
         </form>
       </div>
@@ -68,4 +83,22 @@ const Register: FunctionComponent = () => {
   );
 };
 
-export default Register;
+// ---------------------------------------------- map state to props
+const mapStateToProps = (state: AppState) => ({
+  token: state.auth.token,
+  loading: state.auth.loading,
+  error: state.auth.error
+});
+
+// ---------------------------------------------- map dispatch to props
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<AppState, null, AnyAction>
+) => ({
+  register: (email: string, password: string) =>
+    dispatch(thunkRegister(email, password))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Register);

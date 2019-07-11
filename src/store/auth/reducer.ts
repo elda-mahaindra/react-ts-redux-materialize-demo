@@ -19,13 +19,28 @@ const initialState: IAuthState = {
 const authReducer = (state = initialState, action: AuthAction) => {
   switch (action.type) {
     case LOGIN_BEGIN: {
-      return state;
+      return {
+        ...state,
+        token: null,
+        loading: true,
+        error: null
+      };
     }
     case LOGIN_SUCCESS: {
-      return state;
+      return {
+        ...state,
+        token: action.payload.token,
+        loading: false,
+        error: null
+      };
     }
     case LOGIN_ERROR: {
-      return state;
+      return {
+        ...state,
+        token: null,
+        loading: false,
+        error: action.payload.error
+      };
     }
     case LOGOUT: {
       return {
