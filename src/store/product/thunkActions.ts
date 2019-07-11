@@ -3,7 +3,14 @@ import axios from "axios";
 import { AnyAction } from "redux";
 import { ThunkAction } from "redux-thunk";
 
-import { addProductBegin, addProductSuccess, addProductError } from "./actions";
+import {
+  addProductBegin,
+  addProductSuccess,
+  addProductError,
+  deleteProductBegin,
+  deleteProductSuccess,
+  deleteProductError
+} from "./actions";
 import { IProduct } from "./types";
 import { AppState } from "../rootReducer";
 // ---------------------------------------------- the actions
@@ -59,9 +66,30 @@ export const thunkUpdateProduct = (): ThunkAction<
   AnyAction
 > => dispatch => {};
 
-export const thunkDeleteProduct = (): ThunkAction<
-  void,
-  AppState,
-  null,
-  AnyAction
-> => dispatch => {};
+export const thunkDeleteProduct = (
+  id: number,
+  token: string
+): ThunkAction<void, AppState, null, AnyAction> => dispatch => {
+  const url = `/products/${id.toString()}`;
+
+  dispatch(deleteProductBegin());
+
+  axios
+    .delete(url, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      dispatch(deleteProductSuccess(id));
+    })
+    .catch(error => {
+      if (error.response) {
+        dispatch(deleteProductError(error.response.data.error.msg));
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log("Error", error.message);
+      }
+    });
+};

@@ -11,7 +11,9 @@ import ProductSummary from "./productSummary";
 const ProductList: FunctionComponent<IProductList> = ({ products }) => (
   <div className="row">
     {products.length ? (
-      products.map(product => <ProductSummary key={product.id} />)
+      products.map(product => (
+        <ProductSummary key={product.id} product={product} />
+      ))
     ) : (
       <div className="center">No product yet.</div>
     )}

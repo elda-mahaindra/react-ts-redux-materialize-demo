@@ -70,13 +70,28 @@ const productReducer = (
       return state;
     }
     case DELETE_PRODUCT_BEGIN: {
-      return state;
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
     }
     case DELETE_PRODUCT_SUCCESS: {
-      return state;
+      return {
+        ...state,
+        products: state.products.filter(
+          product => product.id !== action.payload.productId
+        ),
+        loading: false,
+        error: null
+      };
     }
     case DELETE_PRODUCT_ERROR: {
-      return state;
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error
+      };
     }
     default:
       return state;

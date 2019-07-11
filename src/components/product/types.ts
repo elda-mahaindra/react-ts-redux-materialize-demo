@@ -12,3 +12,9 @@ export interface IAddProduct {
 export interface IProductList {
   products: IProduct[];
 }
+
+export interface IProductSummary {
+  product: IProduct;
+  token: string | null;
+  deleteProduct: (id: number, token: string) => void;
+}
