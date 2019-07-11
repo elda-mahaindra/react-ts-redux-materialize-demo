@@ -39,13 +39,26 @@ const productReducer = (
       return state;
     }
     case ADD_PRODUCT_BEGIN: {
-      return state;
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
     }
     case ADD_PRODUCT_SUCCESS: {
-      return state;
+      return {
+        ...state,
+        products: [...state.products, action.payload.product],
+        loading: false,
+        error: null
+      };
     }
     case ADD_PRODUCT_ERROR: {
-      return state;
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error
+      };
     }
     case UPDATE_PRODUCT_BEGIN: {
       return state;

@@ -7,9 +7,23 @@ import React, {
   useEffect,
   useState
 } from "react";
+import { connect } from "react-redux";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
+
+import { IAddProduct } from "./types";
+import { AppState } from "../../store/rootReducer";
+import { thunkAddProduct } from "../../store/product/thunkActions";
+import { IProduct } from "../../store/product/types";
 
 // ---------------------------------------------- the component
-const AddProduct: FunctionComponent = () => {
+const AddProduct: FunctionComponent<IAddProduct> = ({
+  history,
+  token,
+  loading,
+  error,
+  addProduct
+}) => {
   // ---------------------------------------------- local state
   const [product, setProduct] = useState({
     id: 0,
@@ -33,8 +47,7 @@ const AddProduct: FunctionComponent = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log("add product");
-    console.log(product);
+    if (token) addProduct(product, token, history);
   };
 
   // ---------------------------------------------- effects
@@ -85,7 +98,11 @@ const AddProduct: FunctionComponent = () => {
             </button>
           </div>
           <div className="input-field red-text center">
-            <p>Error Add Product here.</p>
+            {loading ? (
+              <p>adding product ...</p>
+            ) : error ? (
+              <p>{error}</p>
+            ) : null}
           </div>
         </form>
       </div>
@@ -93,4 +110,22 @@ const AddProduct: FunctionComponent = () => {
   );
 };
 
-export default AddProduct;
+// ---------------------------------------------- map state to props
+const mapStateToProps = (state: AppState) => ({
+  token: state.auth.token,
+  loading: state.auth.loading,
+  error: state.auth.error
+});
+
+// ---------------------------------------------- map dispatch to props
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<AppState, null, AnyAction>
+) => ({
+  addProduct: (product: IProduct, token: string, history: string[]) =>
+    dispatch(thunkAddProduct(product, token, history))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddProduct);
