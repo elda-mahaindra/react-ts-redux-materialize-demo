@@ -10,6 +10,9 @@ import {
   addProductBegin,
   addProductSuccess,
   addProductError,
+  updateProductBegin,
+  updateProductSuccess,
+  updateProductError,
   deleteProductBegin,
   deleteProductSuccess,
   deleteProductError
@@ -81,12 +84,43 @@ export const thunkAddProduct = (
     });
 };
 
-export const thunkUpdateProduct = (): ThunkAction<
-  void,
-  AppState,
-  null,
-  AnyAction
-> => dispatch => {};
+export const thunkUpdateProduct = (
+  product: IProduct,
+  token: string,
+  history: string[]
+): ThunkAction<void, AppState, null, AnyAction> => dispatch => {
+  const { id, name, price, unitCost } = product;
+  const url = `/products/${id.toString()}`;
+
+  dispatch(updateProductBegin());
+
+  axios
+    .put(
+      url,
+      { name, price, unitCost },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json"
+        }
+      }
+    )
+    .then(response => {
+      const updatedProduct = response.data as IProduct;
+
+      dispatch(updateProductSuccess(updatedProduct));
+      history.push("/");
+    })
+    .catch(error => {
+      if (error.response) {
+        dispatch(updateProductError(error.response.data.error.msg));
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log("Error", error.message);
+      }
+    });
+};
 
 export const thunkDeleteProduct = (
   id: number,

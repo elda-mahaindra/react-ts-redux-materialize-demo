@@ -7,10 +7,28 @@ import React, {
   useEffect,
   useState
 } from "react";
+import { connect } from "react-redux";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
+
+import { IUpdateProduct } from "./types";
+import { AppState } from "../../store/rootReducer";
+import { thunkUpdateProduct } from "../../store/product/thunkActions";
+import { IProduct } from "../../store/product/types";
 
 // ---------------------------------------------- the component
-const UpdateProduct: FunctionComponent = () => {
-  const currentProduct = null;
+const UpdateProduct: FunctionComponent<IUpdateProduct> = ({
+  products,
+  history,
+  match,
+  token,
+  loading,
+  error,
+  updateProduct
+}) => {
+  const currentProduct = products.find(
+    product => product.id.toString() === match.params.productId
+  );
 
   // ---------------------------------------------- local state
   const [product, setProduct] = useState(
@@ -39,8 +57,7 @@ const UpdateProduct: FunctionComponent = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log("update product");
-    console.log(product);
+    if (token) updateProduct(product, token, history);
   };
 
   // ---------------------------------------------- effects
@@ -124,7 +141,11 @@ const UpdateProduct: FunctionComponent = () => {
             </div>
           </div>
           <div className="input-field red-text center">
-            <p>Error Update Product here.</p>
+            {loading ? (
+              <p>updating product ...</p>
+            ) : error ? (
+              <p>{error}</p>
+            ) : null}
           </div>
         </form>
       </div>
@@ -132,4 +153,23 @@ const UpdateProduct: FunctionComponent = () => {
   );
 };
 
-export default UpdateProduct;
+// ---------------------------------------------- map state to props
+const mapStateToProps = (state: AppState) => ({
+  token: state.auth.token,
+  loading: state.auth.loading,
+  error: state.auth.error,
+  products: state.product.products
+});
+
+// ---------------------------------------------- map dispatch to props
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<AppState, null, AnyAction>
+) => ({
+  updateProduct: (product: IProduct, token: string, history: string[]) =>
+    dispatch(thunkUpdateProduct(product, token, history))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UpdateProduct);

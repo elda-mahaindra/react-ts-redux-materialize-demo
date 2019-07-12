@@ -74,13 +74,34 @@ const productReducer = (
       };
     }
     case UPDATE_PRODUCT_BEGIN: {
-      return state;
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
     }
     case UPDATE_PRODUCT_SUCCESS: {
-      return state;
+      return {
+        ...state,
+        products: state.products.map(product => {
+          if (product.id === action.payload.product.id) {
+            return {
+              ...product,
+              ...action.payload.product
+            };
+          }
+          return product;
+        }),
+        loading: false,
+        error: null
+      };
     }
     case UPDATE_PRODUCT_ERROR: {
-      return state;
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error
+      };
     }
     case DELETE_PRODUCT_BEGIN: {
       return {

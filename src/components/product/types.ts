@@ -18,3 +18,17 @@ export interface IProductSummary {
   token: string | null;
   deleteProduct: (id: number, token: string) => void;
 }
+
+export interface IUpdateProduct {
+  products: IProduct[];
+  history: string[];
+  match: {
+    params: {
+      productId: string;
+    };
+  };
+  token: string | null;
+  loading: boolean;
+  error: string | null;
+  updateProduct: (product:IProduct, token:string, history: string[])=>void
+}
