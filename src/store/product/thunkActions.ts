@@ -4,6 +4,9 @@ import { AnyAction } from "redux";
 import { ThunkAction } from "redux-thunk";
 
 import {
+  populateProductsBegin,
+  populateProductsSuccess,
+  populateProductsError,
   addProductBegin,
   addProductSuccess,
   addProductError,
@@ -13,13 +16,32 @@ import {
 } from "./actions";
 import { IProduct } from "./types";
 import { AppState } from "../rootReducer";
+
 // ---------------------------------------------- the actions
-export const thunkPopulateProducts = (): ThunkAction<
-  void,
-  AppState,
-  null,
-  AnyAction
-> => dispatch => {};
+export const thunkPopulateProducts = (
+  token: string
+): ThunkAction<void, AppState, null, AnyAction> => dispatch => {
+  const url = "/products";
+
+  dispatch(populateProductsBegin());
+
+  axios
+    .get(url, { headers: { Authorization: `Bearer ${token}` } })
+    .then(response => {
+      const populatedProducts = response.data.data as IProduct[];
+
+      dispatch(populateProductsSuccess(populatedProducts));
+    })
+    .catch(error => {
+      if (error.response) {
+        dispatch(populateProductsError(error.response.data.error.msg));
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log("Error", error.message);
+      }
+    });
+};
 
 export const thunkAddProduct = (
   product: IProduct,

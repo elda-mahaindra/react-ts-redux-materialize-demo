@@ -30,13 +30,26 @@ const productReducer = (
 ): IProductState => {
   switch (action.type) {
     case POPULATE_PRODUCTS_BEGIN: {
-      return state;
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
     }
     case POPULATE_PRODUCTS_SUCCESS: {
-      return state;
+      return {
+        ...state,
+        products: action.payload.products,
+        loading: false,
+        error: null
+      };
     }
     case POPULATE_PRODUCTS_ERROR: {
-      return state;
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error
+      };
     }
     case ADD_PRODUCT_BEGIN: {
       return {
