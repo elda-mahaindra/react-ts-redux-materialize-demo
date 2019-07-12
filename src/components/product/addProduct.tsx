@@ -8,6 +8,7 @@ import React, {
   useState
 } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 
@@ -56,7 +57,7 @@ const AddProduct: FunctionComponent<IAddProduct> = ({
   }, []);
 
   // ---------------------------------------------- content
-  return (
+  return token ? (
     <div className="container">
       <h5 className="center-align">ADD PRODUCT</h5>
       <div className="row">
@@ -107,6 +108,8 @@ const AddProduct: FunctionComponent<IAddProduct> = ({
         </form>
       </div>
     </div>
+  ) : (
+    <Redirect to="/login" />
   );
 };
 

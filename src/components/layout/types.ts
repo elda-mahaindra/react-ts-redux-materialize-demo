@@ -1,5 +1,7 @@
 export interface IDashboardProps {
   token: string | null;
+  loading: boolean;
+  error: string | null;
   populateProducts: (token: string) => void;
 }
 

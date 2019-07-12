@@ -8,6 +8,7 @@ import React, {
   useState
 } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 
@@ -68,7 +69,7 @@ const UpdateProduct: FunctionComponent<IUpdateProduct> = ({
   }, []);
 
   // ---------------------------------------------- content
-  return (
+  return token ? (
     <div className="container">
       <h5 className="center-align">UPDATE PRODUCT</h5>
       <div className="row">
@@ -150,6 +151,8 @@ const UpdateProduct: FunctionComponent<IUpdateProduct> = ({
         </form>
       </div>
     </div>
+  ) : (
+    <Redirect to="/login" />
   );
 };
 
